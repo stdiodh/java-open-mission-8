@@ -13,7 +13,7 @@
 2.  **이론의 확립:** 코드를 작성하기 전 사용하려는 기술과 로직의 이론을 확실히 학습합니다.
 3.  **'왜?'에 집중하는 기록:** 막히는 과정을 두려워하지 않고<br> 문제 발생의 이유(`Why`)와 해결 과정을 상세히 기록하여 기술의 본질을 파악하려 노력합니다.
 
-이 과정을 통해 프리코스의 경험을 일회성 지식이 아닌 지속 가능한 자산으로 만들고<br> 
+이 과정을 통해 프리코스의 경험을 일회성 지식이 아닌 지속 가능한 자산으로 만들고<br>
 백엔드 개발자로서 프론트엔드와의 협업을 공감하는 `T자형 인재`로 성장하는 것을 목표로 합니다.
 
 ## 🏗️ 시스템 아키텍처 (System Architecture)
@@ -26,15 +26,15 @@ CI/CD 파이프라인을 통해 각각 AWS와 Firebase에 배포됩니다.
 </br>
 
 * **Backend (Spring Boot):**
-    * IntelliJ에서 개발 후 Github에 Push합니다.
-    * Github Actions가 CI/CD를 수행하며, 코드를 빌드하고 Docker 이미지를 생성합니다.
-    * 생성된 이미지는 DockerHub에 Push됩니다.
-    * AWS EC2 서버에서 Docker 이미지를 Pull 받아 Nginx, Certbot과 함께 애플리케이션을 실행합니다. (데이터베이스: MongoDB 사용)
+  * IntelliJ에서 개발 후 Github에 Push합니다.
+  * Github Actions가 CI/CD를 수행하며, 코드를 빌드하고 Docker 이미지를 생성합니다.
+  * 생성된 이미지는 DockerHub에 Push됩니다.
+  * AWS EC2 서버에서 Docker 이미지를 Pull 받아 Nginx, Certbot과 함께 애플리케이션을 실행합니다. (데이터베이스: MongoDB 사용)
 * **Frontend (React):**
-    * VS Code에서 개발 후 Github에 Push합니다.
-    * Github Actions가 CI/CD를 수행하여 Firebase Hosting에 빌드 및 배포합니다.
+  * VS Code에서 개발 후 Github에 Push합니다.
+  * Github Actions가 CI/CD를 수행하여 Firebase Hosting에 빌드 및 배포합니다.
 * **Interaction:**
-    * 프론트엔드(React)는 백엔드(Spring Boot) 서버에 API를 요청하고, JSON 형식의 데이터를 받아 화면을 렌더링합니다.
+  * 프론트엔드(React)는 백엔드(Spring Boot) 서버에 API를 요청하고, JSON 형식의 데이터를 받아 화면을 렌더링합니다.
 
 ---
 
@@ -112,6 +112,62 @@ CI/CD 파이프라인을 통해 각각 AWS와 Firebase에 배포됩니다.
     API Server-->>-Client: 200 OK (body: {"statistics": {"FIRST": 0, ...}, "profitRate": 62.5})
     ```
 
+---
+## 📝 API 명세 및 예외 처리 (API Specification)
+
+### 1. 공통 API 에러 응답 포맷
+
+본 프로젝트의 모든 API는 예외 발생 시, 클라이언트가 일관된 방식으로 에러를 처리할 수 있도록 다음과 같은 통일된 JSON 포맷으로 응답합니다.
+
+```json
+{
+  "status": 400,
+  "error": "Bad Request",
+  "code": "COMMON_INVALID_INPUT",
+  "message": "입력값이 올바르지 않습니다."
+}
+```
+* **status**: HTTP 상태 코드 (예: 400, 404, 500)
+* **error**: HTTP 상태 코드에 해당하는 표준 에러 이름
+* **code**: 애플리케이션 내부에서 정의한 구체적인 에러 코드 (클라이언트 식별용)
+* **message**: 사용자에게 노출 가능한 에러 메시지
+
+### 2. 예외 처리 전략 (Strategy)
+
+* **`@RestControllerAdvice`**: 전역 예외 처리기를 통해 애플리케이션 전반에서 발생하는 예외를 중앙에서 관리합니다.
+* **Custom Exception**: 각 도메인별로 구체적인 의미를 가진 커스텀 예외(예: `NegativeNumberException`)를 정의하여 코드의 가독성을 높이고 명확한 에러 처리를 수행합니다.
+* **DTO Validation**: `@Valid`와 Bean Validation(`@NotNull`, `@Size`, `@Min` 등)을 활용하여 컨트롤러 진입 전 요청 데이터의 기본적인 유효성을 검증합니다.
+
+### 3. 기능별 주요 예외 명세
+
+각 미션별로 발생할 수 있는 대표적인 예외 상황과 예상되는 에러 코드입니다.
+
+#### 🧮 Mission 1: 문자열 덧셈 계산기
+
+| 예외 상황 | HTTP Status | Error Code |
+| :--- | :---: | :--- |
+| 음수 입력 | 400 | `CALC_NEGATIVE_NUMBER` |
+| 숫자 이외의 값 포함 | 400 | `CALC_INVALID_FORMAT` |
+| 잘못된 커스텀 구분자 형식 | 400 | `CALC_INVALID_CUSTOM_DELIMITER` |
+
+#### 🏎️ Mission 2: 자동차 경주
+
+| 예외 상황 | HTTP Status | Error Code |
+| :--- | :---: | :--- |
+| 자동차 이름 5자 초과 | 400 | `RACE_NAME_TOO_LONG` |
+| 자동차 이름 공백/null | 400 | `RACE_NAME_BLANK` |
+| 자동차 이름 중복 | 400 | `RACE_NAME_DUPLICATED` |
+| 시도 횟수가 1 미만 | 400 | `RACE_COUNT_INVALID` |
+
+#### 🎱 Mission 3: 로또
+
+| 예외 상황 | HTTP Status | Error Code |
+| :--- | :---: | :--- |
+| 구입 금액이 1,000원 단위가 아님 | 400 | `LOTTO_AMOUNT_INVALID_UNIT` |
+| 최소 구입 금액(1,000원) 부족 | 400 | `LOTTO_AMOUNT_INSUFFICIENT` |
+| 로또 번호 개수 오류 (6개 아님) | 400 | `LOTTO_SIZE_INVALID` |
+| 로또 번호 범위 오류 (1~45 외) | 400 | `LOTTO_NUMBER_OUT_OF_RANGE` |
+| 로또/보너스 번호 중복 | 400 | `LOTTO_NUMBER_DUPLICATED` |
 ---
 
 ## 🛠️ 기술 스택 (Tech Stack)
