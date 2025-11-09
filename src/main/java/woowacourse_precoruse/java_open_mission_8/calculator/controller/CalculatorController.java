@@ -1,6 +1,5 @@
 package woowacourse_precoruse.java_open_mission_8.calculator.controller;
 
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
