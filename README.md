@@ -112,10 +112,11 @@ CI/CD 파이프라인을 통해 각각 AWS와 Firebase에 배포됩니다.
     API Server-->>-Client: 200 OK (body: {"statistics": {"FIRST": 0, ...}, "profitRate": 62.5})
     ```
 
----
-## 📝 API 명세 및 예외 처리 (API Specification)
+-----
 
-### 1. 공통 API 에러 응답 포맷
+# 📘 REST API 명세서
+
+## ⚠️ 공통 API 에러 응답 포맷
 
 본 프로젝트의 모든 API는 예외 발생 시, 클라이언트가 일관된 방식으로 에러를 처리할 수 있도록 다음과 같은 통일된 JSON 포맷으로 응답합니다.
 
@@ -127,20 +128,179 @@ CI/CD 파이프라인을 통해 각각 AWS와 Firebase에 배포됩니다.
   "message": "입력값이 올바르지 않습니다."
 }
 ```
+
 * **status**: HTTP 상태 코드 (예: 400, 404, 500)
 * **error**: HTTP 상태 코드에 해당하는 표준 에러 이름
 * **code**: 애플리케이션 내부에서 정의한 구체적인 에러 코드 (클라이언트 식별용)
 * **message**: 사용자에게 노출 가능한 에러 메시지
 
-### 2. 예외 처리 전략 (Strategy)
+-----
+
+## 📚 API 기능 명세서
+
+### 🧮 Mission 1: 문자열 덧셈 계산기
+
+#### 1.1 문자열 덧셈 요청
+
+* **URL:** `/api/calculator/add`
+* **Method:** `POST`
+* **Description:** 구분자로 연결된 문자열을 입력받아 합계를 반환합니다.
+
+**Request Body**
+
+```json
+{
+  "expression": "//;\n1;2;3"
+}
+```
+
+* `expression` (String, 필수): 계산할 문자열 표현식 (기본 구분자 `,`, `:` 또는 커스텀 구분자 `//(구분자)\n` 사용)
+
+**Response Body (Success: 200 OK)**
+
+```json
+{
+  "result": 6
+}
+```
+
+* `result` (Integer): 계산 결과
+
+-----
+
+### 🏎️ Mission 2: 자동차 경주
+
+#### 2.1 경주 게임 실행 요청
+
+* **URL:** `/api/racingcar/play`
+* **Method:** `POST`
+* **Description:** 자동차 이름들과 시도 횟수를 입력받아 경주를 실행하고 전체 결과를 반환합니다.
+
+**Request Body**
+
+```json
+{
+  "names": "pobi,woni,jun",
+  "count": 5
+}
+```
+
+* `names` (String, 필수): 쉼표(`,`)로 구분된 자동차 이름 목록 (각 이름은 5자 이하)
+* `count` (Integer, 필수): 시도할 회수 (1 이상)
+
+**Response Body (Success: 200 OK)**
+
+```json
+{
+  "rounds": [
+    [
+      { "name": "pobi", "position": 1 },
+      { "name": "woni", "position": 0 },
+      { "name": "jun", "position": 1 }
+    ],
+    // ... (중간 라운드 생략) ...
+    [
+      { "name": "pobi", "position": 4 },
+      { "name": "woni", "position": 2 },
+      { "name": "jun", "position": 5 }
+    ]
+  ],
+  "winners": ["jun"]
+}
+```
+
+* `rounds` (List\<List\<Object\>\>): 각 라운드별 모든 자동차의 상태(이름, 위치) 리스트
+* `winners` (List\<String\>): 최종 우승자 이름 리스트 (공동 우승 가능)
+
+-----
+
+### 🎱 Mission 3: 로또
+
+#### 3.1 로또 구입 요청
+
+* **URL:** `/api/lotto/purchase`
+* **Method:** `POST`
+* **Description:** 구입 금액을 입력받아 해당 금액만큼 로또를 발행합니다.
+
+**Request Body**
+
+```json
+{
+  "amount": 14000
+}
+```
+
+* `amount` (Integer, 필수): 구입 금액 (1,000원 단위)
+
+**Response Body (Success: 200 OK)**
+
+```json
+{
+  "count": 14,
+  "lottos": [
+    [8, 21, 23, 41, 42, 43],
+    [3, 5, 11, 16, 32, 38],
+    // ... (총 14개의 로또 번호 배열)
+  ]
+}
+```
+
+* `count` (Integer): 발행된 로또 수량
+* `lottos` (List\<List\<Integer\>\>): 발행된 각 로또의 번호(6개) 리스트
+
+#### 3.2 당첨 결과 확인 요청
+
+* **URL:** `/api/lotto/result`
+* **Method:** `POST`
+* **Description:** 구매한 로또들과 당첨 번호를 비교하여 당첨 통계와 수익률을 계산합니다.
+
+**Request Body**
+
+```json
+{
+  "lottos": [
+    [8, 21, 23, 41, 42, 43],
+    [3, 5, 11, 16, 32, 38]
+    // ... (구매했던 로또 목록)
+  ],
+  "winningNumbers": [1, 2, 3, 4, 5, 6],
+  "bonusNumber": 7
+}
+```
+
+* `lottos` (List\<List\<Integer\>\>, 필수): 구매한 로또 번호 목록
+* `winningNumbers` (List\<Integer\>, 필수): 이번 주 당첨 번호 6개
+* `bonusNumber` (Integer, 필수): 보너스 번호 1개
+
+**Response Body (Success: 200 OK)**
+
+```json
+{
+  "statistics": {
+    "FIFTH": 1,   // 3개 일치 (5,000원)
+    "FOURTH": 0,  // 4개 일치 (50,000원)
+    "THIRD": 0,   // 5개 일치 (1,500,000원)
+    "SECOND": 0,  // 5개 + 보너스 일치 (30,000,000원)
+    "FIRST": 0    // 6개 일치 (2,000,000,000원)
+  },
+  "yieldRate": 35.7  // 총 수익률 (%)
+}
+```
+
+* `statistics` (Map\<String, Integer\>): 등수별 당첨 횟수
+* `yieldRate` (Double): 총 수익률 (소수점 둘째 자리에서 반올림)
+
+-----
+
+## 📝 예외 처리 명세서
+
+### 1\. 예외 처리 전략 (Strategy)
 
 * **`@RestControllerAdvice`**: 전역 예외 처리기를 통해 애플리케이션 전반에서 발생하는 예외를 중앙에서 관리합니다.
 * **Custom Exception**: 각 도메인별로 구체적인 의미를 가진 커스텀 예외(예: `NegativeNumberException`)를 정의하여 코드의 가독성을 높이고 명확한 에러 처리를 수행합니다.
 * **DTO Validation**: `@Valid`와 Bean Validation(`@NotNull`, `@Size`, `@Min` 등)을 활용하여 컨트롤러 진입 전 요청 데이터의 기본적인 유효성을 검증합니다.
 
-### 3. 기능별 주요 예외 명세
-
-각 미션별로 발생할 수 있는 대표적인 예외 상황과 예상되는 에러 코드입니다.
+### 2\. 기능별 주요 예외 명세
 
 #### 🧮 Mission 1: 문자열 덧셈 계산기
 
@@ -166,8 +326,9 @@ CI/CD 파이프라인을 통해 각각 AWS와 Firebase에 배포됩니다.
 | 구입 금액이 1,000원 단위가 아님 | 400 | `LOTTO_AMOUNT_INVALID_UNIT` |
 | 최소 구입 금액(1,000원) 부족 | 400 | `LOTTO_AMOUNT_INSUFFICIENT` |
 | 로또 번호 개수 오류 (6개 아님) | 400 | `LOTTO_SIZE_INVALID` |
-| 로또 번호 범위 오류 (1~45 외) | 400 | `LOTTO_NUMBER_OUT_OF_RANGE` |
+| 로또 번호 범위 오류 (1\~45 외) | 400 | `LOTTO_NUMBER_OUT_OF_RANGE` |
 | 로또/보너스 번호 중복 | 400 | `LOTTO_NUMBER_DUPLICATED` |
+
 ---
 
 ## 🛠️ 기술 스택 (Tech Stack)
