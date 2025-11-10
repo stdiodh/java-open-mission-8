@@ -7,13 +7,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PositionTest {
 
     @Test
-    void 초기_위치는_0임() {
+    void 초기_위치는_0이다() {
         Position position = new Position();
         assertThat(position.getValue()).isEqualTo(0);
     }
 
     @Test
-    void increase_호출시_위치가_1증가함() {
+    void increase_호출시_위치가_1증가한다() {
         Position position = new Position();
         position.increase();
         position.increase();
@@ -21,7 +21,7 @@ class PositionTest {
     }
 
     @Test
-    void isGreaterThan_으로_크기를_비교함() {
+    void isGreaterThan_으로_크기를_비교한다() {
         Position greater = new Position();
         greater.increase();
         Position smaller = new Position();
@@ -31,7 +31,7 @@ class PositionTest {
     }
 
     @Test
-    void isSameAs_으로_같은_위치인지_비교함() {
+    void isSameAs_으로_같은_위치인지_비교한다() {
         Position targetPosition = new Position();
         targetPosition.increase();
 
