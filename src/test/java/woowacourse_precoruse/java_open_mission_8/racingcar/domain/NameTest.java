@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class NameTest {
 
     @Test
-    void 유효한_이름은_정상적으로_생성됨() {
+    void 유효한_이름은_정상적으로_생성된다() {
         assertThatNoException().isThrownBy(() -> new Name("pobi"));
         assertThatNoException().isThrownBy(() -> new Name("a"));
         assertThatNoException().isThrownBy(() -> new Name("javaj"));
@@ -20,14 +20,14 @@ class NameTest {
     @ParameterizedTest
     @NullAndEmptySource
     @ValueSource(strings = {" ", "  "})
-    void 이름이_null이거나_공백이면_예외_발생함(String input) {
+    void 이름이_null이거나_공백이면_예외가_발생한다(String input) {
         assertThatThrownBy(() -> new Name(input))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("공백일 수 없음");
     }
 
     @Test
-    void 이름이_5자를_초과하면_예외_발생함() {
+    void 이름이_5자를_초과하면_예외가_발생한다() {
         assertThatThrownBy(() -> new Name("woowatech"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("5자를 초과할 수 없음");
