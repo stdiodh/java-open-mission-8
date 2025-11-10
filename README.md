@@ -57,7 +57,7 @@ CI/CD 파이프라인을 통해 각각 AWS와 Firebase에 배포됩니다.
 * **API 흐름 (Sequence Diagram):**
     ```mermaid
     sequenceDiagram
-        Client->>+API Server: POST /api/v1/calculator/add (body: "text")
+        Client->>+API Server: POST /api/calculator/add (body: "text")
         Note over API Server: 1. 문자열 파싱 (구분자 식별)<br>2. 유효성 검사 (음수, 숫자 형식)<br>3. 덧셈 연산
         API Server-->>-Client: 200 OK (body: {"result": sum})
         
@@ -79,7 +79,7 @@ CI/CD 파이프라인을 통해 각각 AWS와 Firebase에 배포됩니다.
 * **API 흐름 (Sequence Diagram):**
     ```mermaid
     sequenceDiagram
-        Client->>+API Server: POST /api/v1/racing/start (body: {"names": "pobi,woni,jun", "tryCount": 5})
+        Client->>+API Server: POST /api/racingcar/play (body: {"names": "pobi,woni,jun", "tryCount": 5})
         Note over API Server: 1. 입력값 유효성 검사 (이름 5자, 중복, 횟수 등)<br>2. `Cars` 객체 생성<br>3. `tryCount`만큼 경주 시뮬레이션 실행<br>4. 매 라운드 결과 또는 최종 결과 집계
         API Server-->>-Client: 200 OK (body: {"rounds": [...], "winners": ["pobi", "jun"]})
         
@@ -102,12 +102,12 @@ CI/CD 파이프라인을 통해 각각 AWS와 Firebase에 배포됩니다.
     ```mermaid
     sequenceDiagram
     Note over Client: 1. 로또 구매
-    Client->>+API Server: POST /api/v1/lotto/purchase (body: {"amount": 8000})
+    Client->>+API Server: POST /api/lotto/purchase (body: {"amount": 8000})
     Note over API Server: 1. 구입 금액 검증 (1000단위, 0원 등)<br>2. 8개의 로또 생성 (LottoMachine)<br>3. 생성된 로또 목록 저장 (DB or 세션)
     API Server-->>-Client: 200 OK (body: {"count": 8, "lottos": [[...], [...]]})
 
     Note over Client: 2. 당첨 번호 및 결과 확인
-    Client->>+API Server: POST /api/v1/lotto/result (body: {"purchasedLottos": [[...],...], "winningNumbers": [1,2,3,4,5,6], "bonusNumber": 7})
+    Client->>+API Server: POST /api/lotto/result (body: {"purchasedLottos": [[...],...], "winningNumbers": [1,2,3,4,5,6], "bonusNumber": 7})
     Note over API Server: 1. 당첨/보너스 번호 유효성 검사<br>2. (전달받은 로또 목록) vs (당첨 번호) 비교<br>3. 당첨 통계 (Rank) 집계<br>4. 수익률 계산
     API Server-->>-Client: 200 OK (body: {"statistics": {"FIRST": 0, ...}, "profitRate": 62.5})
     ```
