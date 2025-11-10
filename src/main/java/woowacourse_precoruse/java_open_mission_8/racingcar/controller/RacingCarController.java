@@ -1,5 +1,6 @@
 package woowacourse_precoruse.java_open_mission_8.racingcar.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +20,7 @@ public class RacingCarController {
     }
 
     @PostMapping("/play")
-    public ResponseEntity<RacingCarResponse> play(@RequestBody RacingCarRequest request) {
+    public ResponseEntity<RacingCarResponse> play(@RequestBody @Valid RacingCarRequest request) {
         RacingCarResponse response = racingCarService.play(request);
         return ResponseEntity.ok(response);
     }
