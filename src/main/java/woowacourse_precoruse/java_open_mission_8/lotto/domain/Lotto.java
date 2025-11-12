@@ -33,6 +33,16 @@ public class Lotto {
         }
     }
 
+    public boolean contains(LottoNumber number) {
+        return this.numbers.contains(number);
+    }
+
+    public int countMatchingNumbers(Lotto other) {
+        return (int) this.numbers.stream()
+                .filter(other::contains)
+                .count();
+    }
+
     public List<LottoNumber> getNumbers() {
         return numbers;
     }
