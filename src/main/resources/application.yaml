@@ -1,3 +1,7 @@
 spring:
   application:
     name: java-open-mission-8
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/lotto-db
