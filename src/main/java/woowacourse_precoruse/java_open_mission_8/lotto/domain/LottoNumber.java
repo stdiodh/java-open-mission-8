@@ -11,6 +11,11 @@ public record LottoNumber(int value) implements Comparable<LottoNumber> {
     }
 
     @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+
+    @Override
     public int compareTo(LottoNumber other) {
         return Integer.compare(this.value, other.value);
     }
