@@ -1,7 +1,6 @@
 spring:
-  application:
-    name: java-open-mission-8
-
+  config:
+    import: optional:dotenv:.env
   data:
     mongodb:
-      uri: mongodb://localhost:27017/lotto-db
+      uri: ${MONGO_URI}
