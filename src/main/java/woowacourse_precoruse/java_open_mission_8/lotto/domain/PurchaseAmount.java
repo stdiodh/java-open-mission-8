@@ -32,4 +32,8 @@ public class PurchaseAmount {
     public int getAmount() {
         return amount;
     }
+
+    public double calculateProfitRate(long totalPrize) {
+        return (double) totalPrize / this.amount;
+    }
 }
