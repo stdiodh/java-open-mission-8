@@ -12,7 +12,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class WinningLottoTest {
     private Lotto createLotto(List<Integer> numbers) {
-        return new Lotto(numbers.stream().map(LottoNumber::new).toList());
+        List<LottoNumber> lottoNumbers = numbers.stream()
+                .map(LottoNumber::new)
+                .toList();
+        return new Lotto(lottoNumbers, null);
     }
 
     @Test

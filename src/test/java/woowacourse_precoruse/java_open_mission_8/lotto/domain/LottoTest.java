@@ -19,7 +19,7 @@ class LottoTest {
     void 로또번호가_6개가_아니면_예외가_발생한다() {
         List<LottoNumber> numbers = createLottoNumbers(List.of(1, 2, 3, 4, 5));
 
-        assertThatThrownBy(() -> new Lotto(numbers))
+        assertThatThrownBy(() -> new Lotto(numbers, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("로또 번호는 6개여야 합니다.");
     }
@@ -28,7 +28,7 @@ class LottoTest {
     void 로또번호에_중복이_있으면_예외가_발생한다() {
         List<LottoNumber> numbers = createLottoNumbers(List.of(1, 2, 3, 4, 5, 5));
 
-        assertThatThrownBy(() -> new Lotto(numbers))
+        assertThatThrownBy(() -> new Lotto(numbers, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("로또 번호는 중복될 수 없습니다.");
     }
@@ -38,7 +38,7 @@ class LottoTest {
         List<LottoNumber> numbers = createLottoNumbers(List.of(45, 2, 3, 1, 5, 6));
         List<LottoNumber> sortedNumbers = createLottoNumbers(List.of(1, 2, 3, 5, 6, 45));
 
-        Lotto lotto = new Lotto(numbers);
+        Lotto lotto = new Lotto(numbers, null);
 
         assertThat(lotto.getNumbers()).isEqualTo(sortedNumbers);
     }

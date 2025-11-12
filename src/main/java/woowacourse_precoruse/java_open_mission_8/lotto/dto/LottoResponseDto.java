@@ -2,6 +2,7 @@ package woowacourse_precoruse.java_open_mission_8.lotto.dto;
 
 import java.util.List;
 import woowacourse_precoruse.java_open_mission_8.lotto.domain.Lotto;
+import woowacourse_precoruse.java_open_mission_8.lotto.domain.LottoNumber;
 
 public record LottoResponseDto(
         List<Integer> numbers

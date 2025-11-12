@@ -9,7 +9,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class LottoNumberTest {
-
     @Test
     @DisplayName("1~45 범위의 숫자로 정상적으로 생성된다")
     void 유효한_범위의_숫자로_생성된다() {
