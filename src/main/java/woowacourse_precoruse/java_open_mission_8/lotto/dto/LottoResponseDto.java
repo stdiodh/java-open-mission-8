@@ -13,12 +13,16 @@ public class LottoResponseDto {
 
     public static LottoResponseDto from(Lotto lotto) {
         List<Integer> lottoNumbers = lotto.getNumbers().stream()
-                .map(LottoResponseDto::mapLottoNumberValue)
+                .map(LottoResponseDto::mapLottoNumberValue) // 1-dot-rule 준수
                 .toList();
         return new LottoResponseDto(lottoNumbers);
     }
 
     private static Integer mapLottoNumberValue(LottoNumber number) {
         return number.value();
+    }
+
+    public List<Integer> getNumbers() {
+        return numbers;
     }
 }
