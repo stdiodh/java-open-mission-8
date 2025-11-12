@@ -11,13 +11,19 @@ public class Lotto {
 
     @Id
     private String id;
-
+    private final String purchaseId;
     private final List<LottoNumber> numbers;
 
-    public Lotto(List<LottoNumber> numbers) {
+    protected Lotto() {
+        this.numbers = List.of();
+        this.purchaseId = null;
+    }
+
+    public Lotto(List<LottoNumber> numbers, String purchaseId) {
         validate(numbers);
 
         this.id = UUID.randomUUID().toString();
+        this.purchaseId = purchaseId;
         this.numbers = numbers.stream()
                 .sorted()
                 .toList();
