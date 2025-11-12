@@ -1,10 +1,11 @@
 package woowacourse_precoruse.java_open_mission_8.lotto.service;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import woowacourse_precoruse.java_open_mission_8.lotto.domain.Lotto;
@@ -23,11 +24,10 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class LottoServiceImplTest {
-    @Autowired
-    private LottoService lottoService;
+    @InjectMocks
+    private LottoServiceImpl lottoService;
 
     @Mock
     private LottoRepository lottoRepository;
