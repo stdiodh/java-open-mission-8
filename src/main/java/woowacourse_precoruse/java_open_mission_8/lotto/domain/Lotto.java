@@ -60,4 +60,8 @@ public class Lotto {
     public List<LottoNumber> getNumbers() {
         return numbers;
     }
+
+    public String getPurchaseId() {
+        return purchaseId;
+    }
 }
