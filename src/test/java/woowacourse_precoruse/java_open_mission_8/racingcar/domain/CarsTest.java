@@ -22,11 +22,11 @@ class CarsTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"pobi", "pobi,pobi", "a,b,a"})
+    @ValueSource(strings = {"pobi,pobi", "a,b,a"})
     void 자동차_이름이_중복되면_생성시_예외가_발생한다(String inputNames) {
         assertThatThrownBy(() -> Cars.from(inputNames))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("이름은 중복될 수 없음");
+                .hasMessageContaining("자동차 이름은 중복될 수 없습니다.");
     }
 
     @ParameterizedTest
@@ -34,7 +34,7 @@ class CarsTest {
     void 자동차가_2대_미만이면_생성시_예외가_발생한다(String inputNames) {
         assertThatThrownBy(() -> Cars.from(inputNames))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("2대 이상 참여해야 함");
+                .hasMessageContaining("자동차는 2대 이상 참여해야 합니다.");
     }
 
     @Test

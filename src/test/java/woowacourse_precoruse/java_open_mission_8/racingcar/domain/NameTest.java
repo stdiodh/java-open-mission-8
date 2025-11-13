@@ -23,13 +23,13 @@ class NameTest {
     void 이름이_null이거나_공백이면_예외가_발생한다(String input) {
         assertThatThrownBy(() -> new Name(input))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("공백일 수 없음");
+                .hasMessageContaining("자동차 이름은 공백일 수 없습니다.");
     }
 
     @Test
     void 이름이_5자를_초과하면_예외가_발생한다() {
         assertThatThrownBy(() -> new Name("woowatech"))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("5자를 초과할 수 없음");
+                .hasMessageContaining("자동차 이름은 5자를 초과할 수 없습니다.");
     }
 }
