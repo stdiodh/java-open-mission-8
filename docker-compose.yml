@@ -1,0 +1,28 @@
+services:
+  app:
+    image: stdiodh/java-open-mission-8:latest
+    container_name: java-open-mission-8-container
+    ports:
+      - "8082:8080"
+
+    env_file:
+      - /home/ec2-user/app/java-open-mission-8/.env
+
+    networks:
+      - open-mission-8-network
+    restart: always
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: java-open-mission-8-mongodb-container
+    networks:
+      - open-mission-8-network
+    restart: always
+    volumes:
+      - /home/ec2-user/app/java-open-mission-8/mongo-data:/data/db
+
+networks:
+  open-mission-8-network:
+    driver: bridge
