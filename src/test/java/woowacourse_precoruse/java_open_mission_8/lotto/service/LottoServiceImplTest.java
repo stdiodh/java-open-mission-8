@@ -105,4 +105,11 @@ class LottoServiceImplTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("[ERROR] 해당 구매 ID");
     }
+
+    @Test
+    void resetLottos는_레포지토리의_deleteAll을_호출한다() {
+        lottoService.resetLottos();
+
+        verify(lottoRepository, times(1)).deleteAll();
+    }
 }

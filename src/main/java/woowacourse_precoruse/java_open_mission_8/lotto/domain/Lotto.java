@@ -3,6 +3,7 @@ package woowacourse_precoruse.java_open_mission_8.lotto.domain;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "lottos")
@@ -17,6 +18,13 @@ public class Lotto {
     protected Lotto() {
         this.numbers = List.of();
         this.purchaseId = null;
+    }
+
+    @PersistenceCreator
+    public Lotto(String id, String purchaseId, List<LottoNumber> numbers) {
+        this.id = id;
+        this.purchaseId = purchaseId;
+        this.numbers = numbers;
     }
 
     public Lotto(List<LottoNumber> numbers, String purchaseId) {

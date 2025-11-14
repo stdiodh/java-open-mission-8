@@ -70,4 +70,10 @@ public class LottoServiceImpl implements LottoService {
 
         return LottoResultResponseDto.from(lottoResult, purchaseAmount);
     }
+
+    @Transactional
+    @Override
+    public void resetLottos() {
+        lottoRepository.deleteAll();
+    }
 }
