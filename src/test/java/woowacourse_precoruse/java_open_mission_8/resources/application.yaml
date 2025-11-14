@@ -4,3 +4,4 @@ spring:
 
   data:
     mongodb:
+      uri: mongodb://dummy:dummy@localhost:27017/dummy-db
