@@ -2,8 +2,8 @@ server:
   forward-headers-strategy: framework
 
 spring:
-  config:
-    import: optional:file:.env[.properties]
+#  config:
+#    import: optional:file:.env[.properties]
   data:
     mongodb:
       uri: ${MONGO_URI}
@@ -11,3 +11,7 @@ spring:
 springdoc:
   swagger-ui:
     path: /swagger-ui/index.html
+
+swagger:
+  server:
+    url: ${SERVER_URL}
