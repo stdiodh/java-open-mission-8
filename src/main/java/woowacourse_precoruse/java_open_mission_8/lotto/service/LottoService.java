@@ -8,4 +8,6 @@ import woowacourse_precoruse.java_open_mission_8.lotto.dto.WinningLottoRequestDt
 public interface LottoService {
     LottosPurchaseResponseDto purchaseLottos(LottoPurchaseRequestDto requestDto);
     LottoResultResponseDto checkWinningResult(String purchaseId, WinningLottoRequestDto requestDto);
+
+    void resetLottos();
 }

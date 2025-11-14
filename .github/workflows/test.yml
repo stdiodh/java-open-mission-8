@@ -26,5 +26,6 @@ jobs:
 
       - name: Run test
         env:
+          SERVER_URL: https://dummy-server.com
           MONGO_URI: mongodb://dummy:dummy@localhost:27017/dummy-db
         run: ./gradlew test

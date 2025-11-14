@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,5 +64,15 @@ public class LottoController {
     ) {
         LottoResultResponseDto response = lottoService.checkWinningResult(purchaseId, requestDto);
         return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "[테스트용] 모든 로또 데이터 삭제", description = "DB에 저장된 모든 로또 구매 기록을 삭제합니다 (캐시 초기화).")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "삭제 성공")
+    })
+    @DeleteMapping("/reset")
+    public ResponseEntity<Void> resetLottos() {
+        lottoService.resetLottos();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
