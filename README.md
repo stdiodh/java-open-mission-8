@@ -309,6 +309,7 @@ CI/CD 파이프라인을 통해 각각 AWS와 Firebase에 배포됩니다.
 | 음수 입력 | 400 | `CALC_NEGATIVE_NUMBER` |
 | 숫자 이외의 값 포함 | 400 | `CALC_INVALID_FORMAT` |
 | 잘못된 커스텀 구분자 형식 | 400 | `CALC_INVALID_CUSTOM_DELIMITER` |
+| 숫자 입력(Numbers)이 null | 400 | `CALC_NULL_INPUT` |
 
 #### 🏎️ Mission 2: 자동차 경주
 
@@ -318,6 +319,7 @@ CI/CD 파이프라인을 통해 각각 AWS와 Firebase에 배포됩니다.
 | 자동차 이름 공백/null | 400 | `RACE_NAME_BLANK` |
 | 자동차 이름 중복 | 400 | `RACE_NAME_DUPLICATED` |
 | 시도 횟수가 1 미만 | 400 | `RACE_COUNT_INVALID` |
+| 자동차가 2대 미만 | 400 | `RACE_CAR_COUNT_INSUFFICIENT` |
 
 #### 🎱 Mission 3: 로또
 
@@ -325,8 +327,9 @@ CI/CD 파이프라인을 통해 각각 AWS와 Firebase에 배포됩니다.
 | :--- | :---: | :--- |
 | 구입 금액이 1,000원 단위가 아님 | 400 | `LOTTO_AMOUNT_INVALID_UNIT` |
 | 최소 구입 금액(1,000원) 부족 | 400 | `LOTTO_AMOUNT_INSUFFICIENT` |
+| 최대 구입 금액(100,000원) 초과 | 400 | `LOTTO_AMOUNT_EXCEEDS_LIMIT` |
 | 로또 번호 개수 오류 (6개 아님) | 400 | `LOTTO_SIZE_INVALID` |
-| 로또 번호 범위 오류 (1\~45 외) | 400 | `LOTTO_NUMBER_OUT_OF_RANGE` |
+| 로또 번호 범위 오류 (1~45 외) | 400 | `LOTTO_NUMBER_OUT_OF_RANGE` |
 | 로또/보너스 번호 중복 | 400 | `LOTTO_NUMBER_DUPLICATED` |
 
 ---
