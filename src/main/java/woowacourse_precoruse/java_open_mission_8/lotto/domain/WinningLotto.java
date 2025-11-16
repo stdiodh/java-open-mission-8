@@ -1,5 +1,8 @@
 package woowacourse_precoruse.java_open_mission_8.lotto.domain;
 
+import woowacourse_precoruse.java_open_mission_8.common.exception.BusinessLogicException;
+import woowacourse_precoruse.java_open_mission_8.common.exception.ErrorCode;
+
 public class WinningLotto {
     private final Lotto winningNumbers;
     private final LottoNumber bonusNumber;
@@ -12,7 +15,7 @@ public class WinningLotto {
 
     private void validateBonusNumber(Lotto winningNumbers, LottoNumber bonusNumber) {
         if (winningNumbers.contains(bonusNumber)) {
-            throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
+            throw new BusinessLogicException(ErrorCode.LOTTO_NUMBER_DUPLICATED);
         }
     }
 

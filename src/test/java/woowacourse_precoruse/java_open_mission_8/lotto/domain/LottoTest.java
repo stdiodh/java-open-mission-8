@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import woowacourse_precoruse.java_open_mission_8.common.exception.BusinessLogicException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -20,7 +21,7 @@ class LottoTest {
         List<LottoNumber> numbers = createLottoNumbers(List.of(1, 2, 3, 4, 5));
 
         assertThatThrownBy(() -> new Lotto(numbers, null))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(BusinessLogicException.class)
                 .hasMessageContaining("로또 번호는 6개여야 합니다.");
     }
 
@@ -29,8 +30,8 @@ class LottoTest {
         List<LottoNumber> numbers = createLottoNumbers(List.of(1, 2, 3, 4, 5, 5));
 
         assertThatThrownBy(() -> new Lotto(numbers, null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("로또 번호는 중복될 수 없습니다.");
+                .isInstanceOf(BusinessLogicException.class)
+                .hasMessageContaining("[ERROR] 로또 번호 또는 보너스 번호가 중복되었습니다.");
     }
 
     @Test

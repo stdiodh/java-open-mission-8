@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.List;
 import java.util.stream.Stream;
+import woowacourse_precoruse.java_open_mission_8.common.exception.BusinessLogicException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -35,8 +36,8 @@ class WinningLottoTest {
         LottoNumber bonus = new LottoNumber(6); // 6 중복
 
         assertThatThrownBy(() -> new WinningLotto(winning, bonus))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
+                .isInstanceOf(BusinessLogicException.class)
+                .hasMessageContaining("[ERROR] 로또 번호 또는 보너스 번호가 중복되었습니다.");
     }
 
     @ParameterizedTest

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import woowacourse_precoruse.java_open_mission_8.common.exception.BusinessLogicException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -22,8 +23,8 @@ class LottoNumberTest {
     @DisplayName("1~45 범위를 벗어나면 예외가 발생한다")
     void 범위를_벗어나면_예외가_발생한다(int invalidInput) {
         assertThatThrownBy(() -> new LottoNumber(invalidInput))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("1부터 45 사이");
+                .isInstanceOf(BusinessLogicException.class)
+                .hasMessageContaining("1에서 45 사이");
     }
 
     @Test

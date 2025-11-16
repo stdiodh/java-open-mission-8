@@ -5,6 +5,8 @@ import java.util.UUID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.data.mongodb.core.mapping.Document;
+import woowacourse_precoruse.java_open_mission_8.common.exception.BusinessLogicException;
+import woowacourse_precoruse.java_open_mission_8.common.exception.ErrorCode;
 
 @Document(collection = "lottos")
 public class Lotto {
@@ -44,14 +46,14 @@ public class Lotto {
 
     private void validateSize(List<LottoNumber> numbers) {
         if (numbers == null || numbers.size() != LOTTO_NUMBER_COUNT) {
-            throw new IllegalArgumentException("[ERROR] 로또 번호는 " + LOTTO_NUMBER_COUNT + "개여야 합니다.");
+            throw new BusinessLogicException(ErrorCode.LOTTO_SIZE_INVALID);
         }
     }
 
     private void validateDuplicate(List<LottoNumber> numbers) {
         long uniqueCount = numbers.stream().distinct().count();
         if (uniqueCount != LOTTO_NUMBER_COUNT) {
-            throw new IllegalArgumentException("[ERROR] 로또 번호는 중복될 수 없습니다.");
+            throw new BusinessLogicException(ErrorCode.LOTTO_NUMBER_DUPLICATED);
         }
     }
 
