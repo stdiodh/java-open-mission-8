@@ -2,6 +2,8 @@ package woowacourse_precoruse.java_open_mission_8.calculator.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import woowacourse_precoruse.java_open_mission_8.common.exception.BusinessLogicException;
+import woowacourse_precoruse.java_open_mission_8.common.exception.ErrorCode;
 
 public class Numbers {
     private final List<Integer> values;
@@ -18,7 +20,7 @@ public class Numbers {
                 numbers.add(Integer.parseInt(token));
             }
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("[ERROR] 숫자가 아닌 값이 포함되어 있습니다.");
+            throw new BusinessLogicException(ErrorCode.CALC_INVALID_FORMAT);
         }
         return numbers;
     }
@@ -26,7 +28,7 @@ public class Numbers {
     private void validateNoNegative() {
         for (int number : values) {
             if (number < 0) {
-                throw new IllegalArgumentException("[ERROR] 음수는 포함될 수 없습니다: " + number);
+                throw new BusinessLogicException(ErrorCode.CALC_NEGATIVE_NUMBER);
             }
         }
     }

@@ -9,6 +9,7 @@ public enum ErrorCode {
     CALC_NEGATIVE_NUMBER(HttpStatus.BAD_REQUEST, "CALC_NEGATIVE_NUMBER", "[ERROR] 음수는 입력할 수 없습니다."),
     CALC_INVALID_FORMAT(HttpStatus.BAD_REQUEST, "CALC_INVALID_FORMAT", "[ERROR] 숫자 이외의 값은 포함될 수 없습니다."),
     CALC_INVALID_CUSTOM_DELIMITER(HttpStatus.BAD_REQUEST, "CALC_INVALID_CUSTOM_DELIMITER", "[ERROR] 커스텀 구분자 형식이 올바르지 않습니다."),
+    CALC_NULL_INPUT(HttpStatus.BAD_REQUEST, "CALC_NULL_INPUT", "[ERROR] 숫자 입력(Numbers)이 null입니다."),
 
     RACE_NAME_TOO_LONG(HttpStatus.BAD_REQUEST, "RACE_NAME_TOO_LONG", "[ERROR] 자동차 이름은 5자를 초과할 수 없습니다."),
     RACE_NAME_BLANK(HttpStatus.BAD_REQUEST, "RACE_NAME_BLANK", "[ERROR] 자동차 이름은 공백일 수 없습니다."),

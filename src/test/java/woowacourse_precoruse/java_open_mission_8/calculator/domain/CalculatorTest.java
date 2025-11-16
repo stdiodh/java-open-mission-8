@@ -2,6 +2,7 @@ package woowacourse_precoruse.java_open_mission_8.calculator.domain;
 
 import org.junit.jupiter.api.Test;
 import java.util.List;
+import woowacourse_precoruse.java_open_mission_8.common.exception.BusinessLogicException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -12,7 +13,7 @@ class CalculatorTest {
     @Test
     void Numbers가_null이면_예외를_던진다() {
         assertThatThrownBy(() -> calculator.calculate(null))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(BusinessLogicException.class)
                 .hasMessageContaining("null");
     }
 
