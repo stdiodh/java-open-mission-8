@@ -11,9 +11,10 @@ public enum ErrorCode {
     CALC_INVALID_CUSTOM_DELIMITER(HttpStatus.BAD_REQUEST, "CALC_INVALID_CUSTOM_DELIMITER", "[ERROR] 커스텀 구분자 형식이 올바르지 않습니다."),
 
     RACE_NAME_TOO_LONG(HttpStatus.BAD_REQUEST, "RACE_NAME_TOO_LONG", "[ERROR] 자동차 이름은 5자를 초과할 수 없습니다."),
-    RACE_NAME_BLANK(HttpStatus.BAD_REQUEST, "RACE_NAME_BLANK", "[ERROR] 자동차 이름은 공백이거나 비어있을 수 없습니다."),
+    RACE_NAME_BLANK(HttpStatus.BAD_REQUEST, "RACE_NAME_BLANK", "[ERROR] 자동차 이름은 공백일 수 없습니다."),
     RACE_NAME_DUPLICATED(HttpStatus.BAD_REQUEST, "RACE_NAME_DUPLICATED", "[ERROR] 자동차 이름은 중복될 수 없습니다."),
     RACE_COUNT_INVALID(HttpStatus.BAD_REQUEST, "RACE_COUNT_INVALID", "[ERROR] 시도 횟수는 1 이상이어야 합니다."),
+    RACE_CAR_COUNT_INSUFFICIENT(HttpStatus.BAD_REQUEST, "RACE_CAR_COUNT_INSUFFICIENT", "[ERROR] 자동차는 2대 이상 참여해야 합니다."),
 
     LOTTO_AMOUNT_INVALID_UNIT(HttpStatus.BAD_REQUEST, "LOTTO_AMOUNT_INVALID_UNIT", "[ERROR] 구입 금액은 1,000원 단위여야 합니다."),
     LOTTO_AMOUNT_INSUFFICIENT(HttpStatus.BAD_REQUEST, "LOTTO_AMOUNT_INSUFFICIENT", "[ERROR] 최소 구입 금액은 1,000원입니다."),
@@ -34,7 +35,6 @@ public enum ErrorCode {
         this.message = message;
     }
 
-    // --- 리팩토링된 Getter ---
     public HttpStatus getStatus() {
         return status;
     }

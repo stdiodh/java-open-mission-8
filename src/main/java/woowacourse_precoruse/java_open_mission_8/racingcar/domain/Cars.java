@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.IntSupplier;
+import woowacourse_precoruse.java_open_mission_8.common.exception.BusinessLogicException;
+import woowacourse_precoruse.java_open_mission_8.common.exception.ErrorCode;
 import woowacourse_precoruse.java_open_mission_8.racingcar.dto.CarDto;
 
 public class Cars {
@@ -24,7 +26,7 @@ public class Cars {
 
     private void validateSize(List<Car> cars) {
         if (cars.size() < MIN_CARS_COUNT) {
-            throw new IllegalArgumentException("[ERROR] 자동차는 2대 이상 참여해야 합니다.");
+            throw new BusinessLogicException(ErrorCode.RACE_CAR_COUNT_INSUFFICIENT);
         }
     }
 
@@ -32,7 +34,7 @@ public class Cars {
         Set<String> names = new HashSet<>();
         for (Car car : cars) {
             if (!names.add(car.getNameValue())) {
-                throw new IllegalArgumentException("[ERROR] 자동차 이름은 중복될 수 없습니다.");
+                throw new BusinessLogicException(ErrorCode.RACE_NAME_DUPLICATED);
             }
         }
     }
