@@ -1,4 +1,4 @@
-name: java-open-mission-8 CICD
+name: java-open-mission-8 Deploy CICD
 
 on:
   push:

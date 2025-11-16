@@ -1,42 +1,56 @@
 package woowacourse_precoruse.java_open_mission_8.common.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Map;
+import java.util.List;
+import woowacourse_precoruse.java_open_mission_8.common.dto.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    /**
-     * @Valid 어노테이션에서 발생한 예외 (DTO 유효성 검사 실패)
-     */
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        String errorMessage = ex.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
-        Map<String, String> errorResponse = Map.of("error", errorMessage);
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
 
-        return ResponseEntity.badRequest().body(errorResponse);
+        BindingResult bindingResult = ex.getBindingResult();
+        List<ObjectError> allErrors = bindingResult.getAllErrors();
+        ObjectError firstError = allErrors.getFirst();
+        String errorMessage = firstError.getDefaultMessage();
+
+        ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;
+        ErrorResponse response = ErrorResponse.of(errorCode, errorMessage); // 커스텀 메시지 사용
+        HttpStatus status = errorCode.getStatus();
+
+        return new ResponseEntity<>(response, status);
+    }
+    @ExceptionHandler(BusinessLogicException.class)
+    public ResponseEntity<ErrorResponse> handleBusinessLogicException(BusinessLogicException ex) {
+
+        ErrorCode errorCode = ex.getErrorCode();
+        HttpStatus status = errorCode.getStatus();
+
+        ErrorResponse response = ErrorResponse.of(errorCode);
+
+        return new ResponseEntity<>(response, status);
     }
 
-    /**
-     * 도메인 또는 서비스 로직에서 발생한 예외 (예: 금액 단위 오류, 중복 번호)
-     */
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException ex) {
-        Map<String, String> errorResponse = Map.of("error", ex.getMessage());
-
-        return ResponseEntity.badRequest().body(errorResponse);
-    }
-
-    /**
-     * 기타 500 에러
-     */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, String>> handleInternalServerError(Exception ex) {
-        Map<String, String> errorResponse = Map.of("error", "서버 내부 오류가 발생했습니다.");
+    public ResponseEntity<ErrorResponse> handleInternalServerError(Exception ex) {
+        log.error("예상치 못한 500 예외를 발견했습니다 : ", ex);
 
-        return ResponseEntity.internalServerError().body(errorResponse);
+        ErrorCode errorCode = ErrorCode.SERVER_INTERNAL_ERROR;
+        ErrorResponse response = ErrorResponse.of(errorCode);
+        HttpStatus status = errorCode.getStatus();
+
+        return new ResponseEntity<>(response, status);
     }
 }

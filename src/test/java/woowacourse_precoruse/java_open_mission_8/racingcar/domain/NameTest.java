@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
+import woowacourse_precoruse.java_open_mission_8.common.exception.BusinessLogicException;
 
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -22,14 +23,14 @@ class NameTest {
     @ValueSource(strings = {" ", "  "})
     void 이름이_null이거나_공백이면_예외가_발생한다(String input) {
         assertThatThrownBy(() -> new Name(input))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(BusinessLogicException.class)
                 .hasMessageContaining("자동차 이름은 공백일 수 없습니다.");
     }
 
     @Test
     void 이름이_5자를_초과하면_예외가_발생한다() {
         assertThatThrownBy(() -> new Name("woowatech"))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(BusinessLogicException.class)
                 .hasMessageContaining("자동차 이름은 5자를 초과할 수 없습니다.");
     }
 }

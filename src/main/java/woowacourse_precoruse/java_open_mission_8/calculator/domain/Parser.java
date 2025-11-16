@@ -3,6 +3,8 @@ package woowacourse_precoruse.java_open_mission_8.calculator.domain;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
+import woowacourse_precoruse.java_open_mission_8.common.exception.BusinessLogicException;
+import woowacourse_precoruse.java_open_mission_8.common.exception.ErrorCode;
 
 public class Parser {
     private static final String CUSTOM_SEPARATOR_START = "//";
@@ -25,7 +27,13 @@ public class Parser {
         int startIndex = CUSTOM_SEPARATOR_START.length();
         int endIndex = text.indexOf(CUSTOM_SEPARATOR_END);
 
-        return text.substring(startIndex, endIndex);
+        String separator = text.substring(startIndex, endIndex);
+
+        if (separator.isEmpty()) {
+            throw new BusinessLogicException(ErrorCode.CALC_INVALID_CUSTOM_DELIMITER);
+        }
+
+        return separator;
     }
 
     private String extractTargetText(String text) {

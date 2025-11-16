@@ -3,6 +3,7 @@ package woowacourse_precoruse.java_open_mission_8.racingcar.domain;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import woowacourse_precoruse.java_open_mission_8.common.exception.BusinessLogicException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
@@ -19,7 +20,7 @@ public class TryCountTest {
     @ValueSource(ints = {0, -1, -1000})
     void 시도_횟수가_1_이상이지_않으면_예외를_발생한다(Integer input) {
         assertThatThrownBy(() -> new TryCount(input))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(BusinessLogicException.class)
                 .hasMessageContaining("1 이상");
     }
 

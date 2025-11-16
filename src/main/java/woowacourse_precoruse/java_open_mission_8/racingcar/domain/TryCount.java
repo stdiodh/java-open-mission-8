@@ -1,5 +1,8 @@
 package woowacourse_precoruse.java_open_mission_8.racingcar.domain;
 
+import woowacourse_precoruse.java_open_mission_8.common.exception.BusinessLogicException;
+import woowacourse_precoruse.java_open_mission_8.common.exception.ErrorCode;
+
 public record TryCount(int value) {
     private static final int MIN_TRY_COUNT = 1;
 
@@ -9,7 +12,7 @@ public record TryCount(int value) {
 
     private void validateRange(int number) {
         if (number < MIN_TRY_COUNT) {
-            throw new IllegalArgumentException("[ERROR] 시도 횟수는 1 이상이어야 합니다.");
+            throw new BusinessLogicException(ErrorCode.RACE_COUNT_INVALID);
         }
     }
 }

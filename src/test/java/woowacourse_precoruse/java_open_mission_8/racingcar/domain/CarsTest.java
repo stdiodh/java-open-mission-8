@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 import java.util.function.IntSupplier;
+import woowacourse_precoruse.java_open_mission_8.common.exception.BusinessLogicException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -25,7 +26,7 @@ class CarsTest {
     @ValueSource(strings = {"pobi,pobi", "a,b,a"})
     void 자동차_이름이_중복되면_생성시_예외가_발생한다(String inputNames) {
         assertThatThrownBy(() -> Cars.from(inputNames))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(BusinessLogicException.class)
                 .hasMessageContaining("자동차 이름은 중복될 수 없습니다.");
     }
 
@@ -33,7 +34,7 @@ class CarsTest {
     @ValueSource(strings = {"pobi", "a"})
     void 자동차가_2대_미만이면_생성시_예외가_발생한다(String inputNames) {
         assertThatThrownBy(() -> Cars.from(inputNames))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(BusinessLogicException.class)
                 .hasMessageContaining("자동차는 2대 이상 참여해야 합니다.");
     }
 

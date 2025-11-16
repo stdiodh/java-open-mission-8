@@ -17,7 +17,6 @@ public record LottosPurchaseResponseDto(
                 .map(LottoResponseDto::from)
                 .toList();
 
-        // 2-argument 비-표준 생성자 호출
         return new LottosPurchaseResponseDto(purchaseId, lottoResponses);
     }
 }
