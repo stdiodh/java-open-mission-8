@@ -2,7 +2,7 @@
 
 > 본 프로젝트는 우아한테크코스 8기 프리코스 기간 동안 진행했던 1~3주차 미션(문자열 덧셈 계산기, 자동차 경주, 로또)을
 `Java`와 `Spring Boot`를 사용한 API 서버로 재구현하고, `React` 기반의 프론트엔드와 연동하여 실제 웹 서비스로 확장하는 오픈 미션입니다.
-
+>
 ## 🏃‍♂️ 오픈 미션의 목표와 다짐
 
 이번 오픈 미션의 핵심 키워드는 `도전`과 `깊이`입니다. <br>
@@ -331,6 +331,19 @@ CI/CD 파이프라인을 통해 각각 AWS와 Firebase에 배포됩니다.
 | 로또 번호 개수 오류 (6개 아님) | 400 | `LOTTO_SIZE_INVALID` |
 | 로또 번호 범위 오류 (1~45 외) | 400 | `LOTTO_NUMBER_OUT_OF_RANGE` |
 | 로또/보너스 번호 중복 | 400 | `LOTTO_NUMBER_DUPLICATED` |
+
+-----
+
+### 📊 테스트 실행 결과 (Test Execution Result)
+
+![Test Result](https://img.shields.io/badge/Tests-95_Passed-success?style=for-the-badge&logo=junit5&logoColor=white)
+
+> 총 **95개의 테스트**가 **약 1초(1s 122ms)** 내에 통과했습니다. <br>
+> 빠른 실행 속도를 통해 개발 과정에서 즉각적인 피드백을 확인하고 있습니다.
+
+<br>
+
+<img width="500" alt="테스트 실행 결과 스크린샷" src="https://github.com/user-attachments/assets/57bf4f43-adf5-4c5c-835f-da1f352e0104" />
 
 -----
 
