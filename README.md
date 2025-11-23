@@ -2,7 +2,7 @@
 
 > 본 프로젝트는 우아한테크코스 8기 프리코스 기간 동안 진행했던 1~3주차 미션(문자열 덧셈 계산기, 자동차 경주, 로또)을
 `Java`와 `Spring Boot`를 사용한 API 서버로 재구현하고, `React` 기반의 프론트엔드와 연동하여 실제 웹 서비스로 확장하는 오픈 미션입니다.
-
+>
 ## 🏃‍♂️ 오픈 미션의 목표와 다짐
 
 이번 오픈 미션의 핵심 키워드는 `도전`과 `깊이`입니다. <br>
@@ -332,7 +332,34 @@ CI/CD 파이프라인을 통해 각각 AWS와 Firebase에 배포됩니다.
 | 로또 번호 범위 오류 (1~45 외) | 400 | `LOTTO_NUMBER_OUT_OF_RANGE` |
 | 로또/보너스 번호 중복 | 400 | `LOTTO_NUMBER_DUPLICATED` |
 
----
+-----
+
+### 📊 테스트 실행 결과 (Test Execution Result)
+
+![Test Result](https://img.shields.io/badge/Tests-95_Passed-success?style=for-the-badge&logo=junit5&logoColor=white)
+
+> 총 **95개의 테스트**가 **약 1초(1s 122ms)** 내에 통과했습니다. <br>
+> 빠른 실행 속도를 통해 개발 과정에서 즉각적인 피드백을 확인하고 있습니다.
+
+<br>
+
+<img width="500" alt="테스트 실행 결과 스크린샷" src="https://github.com/user-attachments/assets/57bf4f43-adf5-4c5c-835f-da1f352e0104" />
+
+-----
+
+## 📚 개발 로그 및 트러블 슈팅 (Troubleshooting Log)
+
+프로젝트를 진행하며 마주친 기술적 난관과 고민의 과정, 그리고 해결 방법을 블로그에 상세히 기록했습니다. <br>
+단순한 기능 구현을 넘어, 기술적 의사결정의 이유(`Why`)와 그로 인한 변화를 중점적으로 다루었습니다.
+
+| 분류 | 주제 | 링크 |
+| :--- | :--- | :---: |
+| **Architecture** | **CLI에서 REST API로: 아키텍처 설계와 구현**<br>콘솔 기반 애플리케이션을 웹 API로 확장하며 겪은 구조적 고민 | [블로그 보기](https://velog.io/@stdiodh/CLI%EC%97%90%EC%84%9C-REST-API%EB%A1%9C-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EC%84%A4%EA%B3%84%EC%99%80-%EA%B5%AC%ED%98%84) |
+| **Domain** | **CLI에서 REST API로: 상태(State)를 관리하는 객체 설계**<br>무상태(Stateless) 웹 환경에서 도메인 객체의 상태 유지 전략 | [블로그 보기](https://velog.io/@stdiodh/CLI%EC%97%90%EC%84%9C-REST-API%EB%A1%9C-%EC%83%81%ED%83%9CState%EB%A5%BC-%EA%B4%80%EB%A6%AC%ED%95%98%EB%8A%94-%EA%B0%9D%EC%B2%B4-%EC%84%A4%EA%B3%84) |
+| **Database** | **CLI에서 REST API로: 인메모리에서 DB까지**<br>데이터 영속성 확보를 위한 MongoDB 도입과 데이터 모델링 | [블로그 보기](https://velog.io/@stdiodh/CLI%EC%97%90%EC%84%9C-REST-API%EB%A1%9C-%EC%9D%B8%EB%A9%94%EB%AA%A8%EB%A6%AC%EC%97%90%EC%84%9C-DB%EA%B9%8C%EC%A7%80) |
+| **DevOps** | **자동 배포 파이프라인 구축기 (feat. GitHub Actions, Docker, Nginx)**<br>CI/CD 환경 구축 과정에서의 삽질과 해결 기록 | [블로그 보기](https://velog.io/@stdiodh/%EC%9E%90%EB%8F%99-%EB%B0%B0%ED%8F%AC-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%EA%B8%B0-feat.-GitHub-Actions-Docker-Nginx-%EC%82%BD%EC%A7%88) |
+
+-----
 
 ## 🛠️ 기술 스택 (Tech Stack)
 

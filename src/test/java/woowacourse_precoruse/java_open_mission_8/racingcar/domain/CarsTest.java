@@ -19,7 +19,7 @@ class CarsTest {
         Cars cars = Cars.from(names);
 
         assertThat(cars.toDtos()).hasSize(3);
-        assertThat(cars.toDtos().get(0).name()).isEqualTo("pobi");
+        assertThat(cars.toDtos().getFirst().name()).isEqualTo("pobi");
     }
 
     @ParameterizedTest

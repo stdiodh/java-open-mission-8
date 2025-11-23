@@ -33,4 +33,3 @@ class CalculatorServiceTest {
         assertThat(response.result()).isEqualTo(0);
     }
 }
-
