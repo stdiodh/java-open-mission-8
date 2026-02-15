@@ -1,372 +1,65 @@
-# 우아한테크코스 8기 오픈 미션 - 프리코스 미션 재구현
+# 우아한테크코스 오픈 미션 API 서버
+> **한 줄 소개**: 프리코스 1~3주차 과제를 Java/Spring API로 재설계하고 웹 서비스 흐름으로 확장한 프로젝트
 
-> 본 프로젝트는 우아한테크코스 8기 프리코스 기간 동안 진행했던 1~3주차 미션(문자열 덧셈 계산기, 자동차 경주, 로또)을
-`Java`와 `Spring Boot`를 사용한 API 서버로 재구현하고, `React` 기반의 프론트엔드와 연동하여 실제 웹 서비스로 확장하는 오픈 미션입니다.
->
-## 🏃‍♂️ 오픈 미션의 목표와 다짐
+## 1. 프로젝트 개요 (Overview)
+- **개발 기간**: 2025년 오픈 미션 기간
+- **개발 인원**: 개인 프로젝트
+- **프로젝트 목적**: 콘솔 기반 문제를 API 서버로 전환하고 예외 처리/도메인 구조/협업 문서화를 강화
+- **Repository**: /Users/dh/Desktop/Code/Project/woowatect-pre-course/java-open-mission-8
 
-이번 오픈 미션의 핵심 키워드는 `도전`과 `깊이`입니다. <br>
-결과에 급급하여 생성형 AI에 의존했던 과거의 학습 방식을 반성하고 <br>
-'속도보다 깊이를 추구하는 개발자'가 되기 위해 다음과 같은 약속을 세웠습니다. <br>
+## 2. 사용 기술 및 선정 이유 (Tech Stack & Decision)
 
-1.  **코드 생성형 AI 사용 제한:** 스스로의 지식으로 문제를 해결하기 위해 노력합니다.<br> (단, 코드 및 커밋 메시지의 오탈자 확인 용도로만 제한적 허용)
-2.  **이론의 확립:** 코드를 작성하기 전 사용하려는 기술과 로직의 이론을 확실히 학습합니다.
-3.  **'왜?'에 집중하는 기록:** 막히는 과정을 두려워하지 않고<br> 문제 발생의 이유(`Why`)와 해결 과정을 상세히 기록하여 기술의 본질을 파악하려 노력합니다.
+| Category | Tech Stack | Version | Decision Reason (Why?) |
+| --- | --- | --- | --- |
+| **Language** | Java | 21 | 도메인 모델과 객체지향 설계를 명확히 표현하기 위함 |
+| **Framework** | Spring Boot + WebFlux + Validation | 3.3.5 | API 중심 서비스와 입력 검증/응답 표준화를 빠르게 구현 |
+| **Database** | MongoDB | - | 미션 결과/상태 데이터 저장을 유연하게 처리하기 위함 |
+| **Docs** | SpringDoc OpenAPI | 2.3.0 | 프론트와 API 계약을 명세 기반으로 맞추기 위함 |
+| **Test** | JUnit, Reactor Test, Embedded Mongo | - | API/도메인 로직 검증과 테스트 독립성 확보 |
 
-이 과정을 통해 프리코스의 경험을 일회성 지식이 아닌 지속 가능한 자산으로 만들고<br>
-백엔드 개발자로서 프론트엔드와의 협업을 공감하는 `T자형 인재`로 성장하는 것을 목표로 합니다.
-
-## 🏗️ 시스템 아키텍처 (System Architecture)
-
-본 프로젝트는 백엔드 API 서버와 프론트엔드 웹 애플리케이션으로 분리되어 있으며<br>
-CI/CD 파이프라인을 통해 각각 AWS와 Firebase에 배포됩니다.
-
-</br>
-<img width="871" height="555" alt="스크린샷 2025-11-06 오후 5 57 03" src="https://github.com/user-attachments/assets/40f1653d-c173-4735-b115-f33d05df1c57" />
-</br>
-
-* **Backend (Spring Boot):**
-  * IntelliJ에서 개발 후 Github에 Push합니다.
-  * Github Actions가 CI/CD를 수행하며, 코드를 빌드하고 Docker 이미지를 생성합니다.
-  * 생성된 이미지는 DockerHub에 Push됩니다.
-  * AWS EC2 서버에서 Docker 이미지를 Pull 받아 Nginx, Certbot과 함께 애플리케이션을 실행합니다. (데이터베이스: MongoDB 사용)
-* **Frontend (React):**
-  * VS Code에서 개발 후 Github에 Push합니다.
-  * Github Actions가 CI/CD를 수행하여 Firebase Hosting에 빌드 및 배포합니다.
-* **Interaction:**
-  * 프론트엔드(React)는 백엔드(Spring Boot) 서버에 API를 요청하고, JSON 형식의 데이터를 받아 화면을 렌더링합니다.
-
----
-
-## 🚀 구현 기능 (API)
-
-기존 1~3주차 미션의 핵심 기능을 API 엔드포인트로 구현합니다.
-
-### 1. 문자열 덧셈 계산기 (1주차)
-
-> 콘솔 입력을 API 요청으로 변경합니다.
-
-* **핵심 기능:**
-
-| 기능 | 설명 |
-| :--- | :--- |
-| **문자열 분리** | 기본 구분자(`,`, `:`) 및 커스텀 구분자를 기준으로 문자열을 분리합니다. |
-| **입력 검증** | 입력 값(음수, 숫자 외 문자)을 검증하고 예외를 처리합니다. |
-| **덧셈 계산** | 분리된 숫자들의 합을 계산하여 반환합니다. |
-
-* **API 흐름 (Sequence Diagram):**
-    ```mermaid
-    sequenceDiagram
-        Client->>+API Server: POST /api/calculator/add (body: "text")
-        Note over API Server: 1. 문자열 파싱 (구분자 식별)<br>2. 유효성 검사 (음수, 숫자 형식)<br>3. 덧셈 연산
-        API Server-->>-Client: 200 OK (body: {"result": sum})
-        
-        Note right of Client: 예외 발생 시<br>API서버는 400 Bad Request와<br>에러 메시지 반환
-    ```
-
-### 2. 자동차 경주 (2주차)
-
-> 콘솔 입/출력을 API 요청/응답으로 변경하여, 프론트엔드에서 경주 과정을 시각화합니다.
-
-* **핵심 기능:**
-
-| 기능 | 설명 |
-| :--- | :--- |
-| **경주 준비** | 쉼표로 구분된 자동차 이름을 입력받아 `Car` 객체를 생성합니다. |
-| **경주 진행** | 시도할 횟수만큼 경주를 진행하며, 각 라운드별 자동차의 위치를 기록합니다. |
-| **우승자 판별** | 최종 우승자를 판별하여 반환합니다. |
-
-* **API 흐름 (Sequence Diagram):**
-    ```mermaid
-    sequenceDiagram
-        Client->>+API Server: POST /api/racingcar/play (body: {"names": "pobi,woni,jun", "tryCount": 5})
-        Note over API Server: 1. 입력값 유효성 검사 (이름 5자, 중복, 횟수 등)<br>2. `Cars` 객체 생성<br>3. `tryCount`만큼 경주 시뮬레이션 실행<br>4. 매 라운드 결과 또는 최종 결과 집계
-        API Server-->>-Client: 200 OK (body: {"rounds": [...], "winners": ["pobi", "jun"]})
-        
-        Note right of Client: API 설계에 따라<br>매 라운드 결과를 반환받거나<br>최종 결과를 한번에 받을 수 있음
-    ```
-
-### 3. 로또 발매기 (3주차)
-
-> 구매, 당첨 번호 입력, 통계 확인 등 각 단계를 별도의 API로 분리하여 구현합니다.
-
-* **핵심 기능:**
-
-| 기능 | 설명 |
-| :--- | :--- |
-| **로또 구매** | 1,000원 단위의 구입 금액을 받아 수량만큼 로또를 자동 발행합니다. |
-| **당첨 번호 입력** | 당첨 번호 6개와 보너스 번호 1개를 입력받습니다. |
-| **당첨 통계** | 발행된 로또와 당첨 번호를 비교하여 1등~5등 당첨 내역과 총 수익률을 계산합니다. |
-
-* **API 흐름 (Sequence Diagram):**
-    ```mermaid
-    sequenceDiagram
-    Note over Client: 1. 로또 구매
-    Client->>+API Server: POST /api/lotto/purchase (body: {"amount": 8000})
-    Note over API Server: 1. 구입 금액 검증 (1000단위, 0원 등)<br>2. 8개의 로또 생성 (LottoMachine)<br>3. 생성된 로또 목록 저장 (DB or 세션)
-    API Server-->>-Client: 200 OK (body: {"count": 8, "lottos": [[...], [...]]})
-
-    Note over Client: 2. 당첨 번호 및 결과 확인
-    Client->>+API Server: POST /api/lotto/result (body: {"purchasedLottos": [[...],...], "winningNumbers": [1,2,3,4,5,6], "bonusNumber": 7})
-    Note over API Server: 1. 당첨/보너스 번호 유효성 검사<br>2. (전달받은 로또 목록) vs (당첨 번호) 비교<br>3. 당첨 통계 (Rank) 집계<br>4. 수익률 계산
-    API Server-->>-Client: 200 OK (body: {"statistics": {"FIRST": 0, ...}, "profitRate": 62.5})
-    ```
-
------
-
-# 📘 REST API 명세서
-
-## ⚠️ 공통 API 에러 응답 포맷
-
-본 프로젝트의 모든 API는 예외 발생 시, 클라이언트가 일관된 방식으로 에러를 처리할 수 있도록 다음과 같은 통일된 JSON 포맷으로 응답합니다.
-
-```json
-{
-  "status": 400,
-  "error": "Bad Request",
-  "code": "COMMON_INVALID_INPUT",
-  "message": "입력값이 올바르지 않습니다."
-}
+## 3. 시스템 아키텍처 (System Architecture)
+```mermaid
+graph TD
+  Client --> API[Spring Boot API]
+  API --> Calculator[Calculator Domain]
+  API --> Racing[Racecar Domain]
+  API --> Lotto[Lotto Domain]
+  API --> Mongo[(MongoDB)]
 ```
 
-* **status**: HTTP 상태 코드 (예: 400, 404, 500)
-* **error**: HTTP 상태 코드에 해당하는 표준 에러 이름
-* **code**: 애플리케이션 내부에서 정의한 구체적인 에러 코드 (클라이언트 식별용)
-* **message**: 사용자에게 노출 가능한 에러 메시지
+- **설계 특징**:
+- 미션별(`calculator`, `racingcar`, `lotto`) 도메인/서비스/컨트롤러 분리
+- 전역 예외 처리(`GlobalExceptionHandler`)와 공통 에러 포맷 통일
+- Swagger 명세와 시퀀스 다이어그램 기반 문서화
 
------
+## 4. 핵심 기능 (Key Features)
+- **문자열 계산기 API**: 커스텀 구분자 파싱, 유효성 검증, 합계 계산
+- **자동차 경주 API**: 라운드별 진행 결과와 우승자 계산
+- **로또 API**: 구매/당첨번호 입력/수익률 통계 계산
+- **공통 에러 응답**: 상태코드/에러코드/메시지 표준화
 
-## 📚 API 기능 명세서
+## 5. 트러블 슈팅 및 성능 개선 (Troubleshooting & Refactoring)
+### 5-1. 미션 확장 시 복잡도 증가 대응
+- **문제(Problem)**: 기능이 늘어날수록 컨트롤러 중심 코드가 비대화될 위험
+- **원인(Cause)**: 입력 검증/도메인 규칙/응답 조합을 컨트롤러에 직접 작성하면 재사용성 저하
+- **해결(Solution)**:
+  1. 미션 단위 패키징으로 관심사 분리
+  2. 도메인 객체(`Name`, `TryCount`, `LottoNumber` 등)에 검증 책임 위임
+- **검증(Verification)**: 신규 규칙 추가 시 해당 도메인/서비스 테스트만 수정되는지 점검
+- **결과(Result)**: 기능 추가 시 변경 범위가 도메인별로 제한되어 유지보수성 향상
 
-### 🧮 Mission 1: 문자열 덧셈 계산기
+### 5-2. 에러 처리 일관성 개선
+- **문제(Problem)**: API별 예외 응답 형식이 다르면 프론트 에러 처리 분기 증가
+- **원인(Cause)**: 기능별 예외가 흩어져 있을 때 상태코드/메시지 형식 편차 발생
+- **해결(Solution)**:
+  1. 전역 예외 핸들러 도입
+  2. 공통 에러 코드/응답 DTO 구조 통일
+- **검증(Verification)**: 계산기/경주/로또 실패 요청에 동일한 에러 스키마 반환 확인
+- **결과(Result)**: 클라이언트 에러 처리 로직 단순화, 디버깅 효율 향상
 
-#### 1.1 문자열 덧셈 요청
+## 6. 프로젝트 회고 (Retrospective)
+- **배운 점**: 단순 문제 풀이도 API/문서/예외 정책을 붙이면 실제 서비스 설계 훈련이 됨
+- **아쉬운 점 & 향후 계획**: 부하 테스트 및 메트릭 수집을 추가해 정량 성능 지표까지 확보할 계획
 
-* **URL:** `/api/calculator/add`
-* **Method:** `POST`
-* **Description:** 구분자로 연결된 문자열을 입력받아 합계를 반환합니다.
-
-**Request Body**
-
-```json
-{
-  "expression": "//;\n1;2;3"
-}
-```
-
-* `expression` (String, 필수): 계산할 문자열 표현식 (기본 구분자 `,`, `:` 또는 커스텀 구분자 `//(구분자)\n` 사용)
-
-**Response Body (Success: 200 OK)**
-
-```json
-{
-  "result": 6
-}
-```
-
-* `result` (Integer): 계산 결과
-
------
-
-### 🏎️ Mission 2: 자동차 경주
-
-#### 2.1 경주 게임 실행 요청
-
-* **URL:** `/api/racingcar/play`
-* **Method:** `POST`
-* **Description:** 자동차 이름들과 시도 횟수를 입력받아 경주를 실행하고 전체 결과를 반환합니다.
-
-**Request Body**
-
-```json
-{
-  "names": "pobi,woni,jun",
-  "count": 5
-}
-```
-
-* `names` (String, 필수): 쉼표(`,`)로 구분된 자동차 이름 목록 (각 이름은 5자 이하)
-* `count` (Integer, 필수): 시도할 회수 (1 이상)
-
-**Response Body (Success: 200 OK)**
-
-```json
-{
-  "rounds": [
-    [
-      { "name": "pobi", "position": 1 },
-      { "name": "woni", "position": 0 },
-      { "name": "jun", "position": 1 }
-    ],
-    // ... (중간 라운드 생략) ...
-    [
-      { "name": "pobi", "position": 4 },
-      { "name": "woni", "position": 2 },
-      { "name": "jun", "position": 5 }
-    ]
-  ],
-  "winners": ["jun"]
-}
-```
-
-* `rounds` (List\<List\<Object\>\>): 각 라운드별 모든 자동차의 상태(이름, 위치) 리스트
-* `winners` (List\<String\>): 최종 우승자 이름 리스트 (공동 우승 가능)
-
------
-
-### 🎱 Mission 3: 로또
-
-#### 3.1 로또 구입 요청
-
-* **URL:** `/api/lotto/purchase`
-* **Method:** `POST`
-* **Description:** 구입 금액을 입력받아 해당 금액만큼 로또를 발행합니다.
-
-**Request Body**
-
-```json
-{
-  "amount": 14000
-}
-```
-
-* `amount` (Integer, 필수): 구입 금액 (1,000원 단위)
-
-**Response Body (Success: 200 OK)**
-
-```json
-{
-  "count": 14,
-  "lottos": [
-    [8, 21, 23, 41, 42, 43],
-    [3, 5, 11, 16, 32, 38],
-    // ... (총 14개의 로또 번호 배열)
-  ]
-}
-```
-
-* `count` (Integer): 발행된 로또 수량
-* `lottos` (List\<List\<Integer\>\>): 발행된 각 로또의 번호(6개) 리스트
-
-#### 3.2 당첨 결과 확인 요청
-
-* **URL:** `/api/lotto/result`
-* **Method:** `POST`
-* **Description:** 구매한 로또들과 당첨 번호를 비교하여 당첨 통계와 수익률을 계산합니다.
-
-**Request Body**
-
-```json
-{
-  "lottos": [
-    [8, 21, 23, 41, 42, 43],
-    [3, 5, 11, 16, 32, 38]
-    // ... (구매했던 로또 목록)
-  ],
-  "winningNumbers": [1, 2, 3, 4, 5, 6],
-  "bonusNumber": 7
-}
-```
-
-* `lottos` (List\<List\<Integer\>\>, 필수): 구매한 로또 번호 목록
-* `winningNumbers` (List\<Integer\>, 필수): 이번 주 당첨 번호 6개
-* `bonusNumber` (Integer, 필수): 보너스 번호 1개
-
-**Response Body (Success: 200 OK)**
-
-```json
-{
-  "statistics": {
-    "FIFTH": 1,   // 3개 일치 (5,000원)
-    "FOURTH": 0,  // 4개 일치 (50,000원)
-    "THIRD": 0,   // 5개 일치 (1,500,000원)
-    "SECOND": 0,  // 5개 + 보너스 일치 (30,000,000원)
-    "FIRST": 0    // 6개 일치 (2,000,000,000원)
-  },
-  "yieldRate": 35.7  // 총 수익률 (%)
-}
-```
-
-* `statistics` (Map\<String, Integer\>): 등수별 당첨 횟수
-* `yieldRate` (Double): 총 수익률 (소수점 둘째 자리에서 반올림)
-
------
-
-## 📝 예외 처리 명세서
-
-### 1\. 예외 처리 전략 (Strategy)
-
-* **`@RestControllerAdvice`**: 전역 예외 처리기를 통해 애플리케이션 전반에서 발생하는 예외를 중앙에서 관리합니다.
-* **Custom Exception**: 각 도메인별로 구체적인 의미를 가진 커스텀 예외(예: `NegativeNumberException`)를 정의하여 코드의 가독성을 높이고 명확한 에러 처리를 수행합니다.
-* **DTO Validation**: `@Valid`와 Bean Validation(`@NotNull`, `@Size`, `@Min` 등)을 활용하여 컨트롤러 진입 전 요청 데이터의 기본적인 유효성을 검증합니다.
-
-### 2\. 기능별 주요 예외 명세
-
-#### 🧮 Mission 1: 문자열 덧셈 계산기
-
-| 예외 상황 | HTTP Status | Error Code |
-| :--- | :---: | :--- |
-| 음수 입력 | 400 | `CALC_NEGATIVE_NUMBER` |
-| 숫자 이외의 값 포함 | 400 | `CALC_INVALID_FORMAT` |
-| 잘못된 커스텀 구분자 형식 | 400 | `CALC_INVALID_CUSTOM_DELIMITER` |
-| 숫자 입력(Numbers)이 null | 400 | `CALC_NULL_INPUT` |
-
-#### 🏎️ Mission 2: 자동차 경주
-
-| 예외 상황 | HTTP Status | Error Code |
-| :--- | :---: | :--- |
-| 자동차 이름 5자 초과 | 400 | `RACE_NAME_TOO_LONG` |
-| 자동차 이름 공백/null | 400 | `RACE_NAME_BLANK` |
-| 자동차 이름 중복 | 400 | `RACE_NAME_DUPLICATED` |
-| 시도 횟수가 1 미만 | 400 | `RACE_COUNT_INVALID` |
-| 자동차가 2대 미만 | 400 | `RACE_CAR_COUNT_INSUFFICIENT` |
-
-#### 🎱 Mission 3: 로또
-
-| 예외 상황 | HTTP Status | Error Code |
-| :--- | :---: | :--- |
-| 구입 금액이 1,000원 단위가 아님 | 400 | `LOTTO_AMOUNT_INVALID_UNIT` |
-| 최소 구입 금액(1,000원) 부족 | 400 | `LOTTO_AMOUNT_INSUFFICIENT` |
-| 최대 구입 금액(100,000원) 초과 | 400 | `LOTTO_AMOUNT_EXCEEDS_LIMIT` |
-| 로또 번호 개수 오류 (6개 아님) | 400 | `LOTTO_SIZE_INVALID` |
-| 로또 번호 범위 오류 (1~45 외) | 400 | `LOTTO_NUMBER_OUT_OF_RANGE` |
-| 로또/보너스 번호 중복 | 400 | `LOTTO_NUMBER_DUPLICATED` |
-
------
-
-### 📊 테스트 실행 결과 (Test Execution Result)
-
-![Test Result](https://img.shields.io/badge/Tests-95_Passed-success?style=for-the-badge&logo=junit5&logoColor=white)
-
-> 총 **95개의 테스트**가 **약 1초(1s 122ms)** 내에 통과했습니다. <br>
-> 빠른 실행 속도를 통해 개발 과정에서 즉각적인 피드백을 확인하고 있습니다.
-
-<br>
-
-<img width="500" alt="테스트 실행 결과 스크린샷" src="https://github.com/user-attachments/assets/57bf4f43-adf5-4c5c-835f-da1f352e0104" />
-
------
-
-## 📚 개발 로그 및 트러블 슈팅 (Troubleshooting Log)
-
-프로젝트를 진행하며 마주친 기술적 난관과 고민의 과정, 그리고 해결 방법을 블로그에 상세히 기록했습니다. <br>
-단순한 기능 구현을 넘어, 기술적 의사결정의 이유(`Why`)와 그로 인한 변화를 중점적으로 다루었습니다.
-
-| 분류 | 주제 | 링크 |
-| :--- | :--- | :---: |
-| **Architecture** | **CLI에서 REST API로: 아키텍처 설계와 구현**<br>콘솔 기반 애플리케이션을 웹 API로 확장하며 겪은 구조적 고민 | [블로그 보기](https://velog.io/@stdiodh/CLI%EC%97%90%EC%84%9C-REST-API%EB%A1%9C-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EC%84%A4%EA%B3%84%EC%99%80-%EA%B5%AC%ED%98%84) |
-| **Domain** | **CLI에서 REST API로: 상태(State)를 관리하는 객체 설계**<br>무상태(Stateless) 웹 환경에서 도메인 객체의 상태 유지 전략 | [블로그 보기](https://velog.io/@stdiodh/CLI%EC%97%90%EC%84%9C-REST-API%EB%A1%9C-%EC%83%81%ED%83%9CState%EB%A5%BC-%EA%B4%80%EB%A6%AC%ED%95%98%EB%8A%94-%EA%B0%9D%EC%B2%B4-%EC%84%A4%EA%B3%84) |
-| **Database** | **CLI에서 REST API로: 인메모리에서 DB까지**<br>데이터 영속성 확보를 위한 MongoDB 도입과 데이터 모델링 | [블로그 보기](https://velog.io/@stdiodh/CLI%EC%97%90%EC%84%9C-REST-API%EB%A1%9C-%EC%9D%B8%EB%A9%94%EB%AA%A8%EB%A6%AC%EC%97%90%EC%84%9C-DB%EA%B9%8C%EC%A7%80) |
-| **DevOps** | **자동 배포 파이프라인 구축기 (feat. GitHub Actions, Docker, Nginx)**<br>CI/CD 환경 구축 과정에서의 삽질과 해결 기록 | [블로그 보기](https://velog.io/@stdiodh/%EC%9E%90%EB%8F%99-%EB%B0%B0%ED%8F%AC-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-%EA%B5%AC%EC%B6%95%EA%B8%B0-feat.-GitHub-Actions-Docker-Nginx-%EC%82%BD%EC%A7%88) |
-
------
-
-## 🛠️ 기술 스택 (Tech Stack)
-
-| 구분 | 기술 |
-| :--- | :--- |
-| **Backend** | Java 21, Spring Boot 3.x, Gradle, JUnit5 |
-| **Frontend** | React, JavaScript(ES6+), HTML5, CSS3 |
-| **Infra & CI/CD** | AWS EC2, Docker, Nginx, Certbot, Github Actions, Firebase Hosting |
-| **Database** | MongoDB |
-| **Tools** | IntelliJ, VS Code, Git, Github |
+## 7. API 명세
+- API 요약 문서: `/Users/dh/Desktop/Code/Project/woowatect-pre-course/java-open-mission-8/docs/API_SPEC.md`
