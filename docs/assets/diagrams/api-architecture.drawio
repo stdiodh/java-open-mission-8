@@ -1,0 +1,60 @@
+<mxfile host="app.diagrams.net" modified="2026-06-04T00:00:00.000Z" agent="Codex" version="24.7.17">
+  <diagram id="api-architecture" name="API Architecture">
+    <mxGraphModel dx="1200" dy="720" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1280" pageHeight="720" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="client" value="Client&#xa;React / Swagger / curl" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#1D4ED8;fontColor=#0F172A;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="240" width="190" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="controller" value="Spring Boot Controller&#xa;/api/calculator, /api/racingcar, /api/lottos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2FE;strokeColor=#0284C7;fontColor=#0F172A;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="155" width="250" height="95" as="geometry"/>
+        </mxCell>
+        <mxCell id="validation" value="DTO Validation&#xa;@Valid, @Min, @Size" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#64748B;fontColor=#0F172A;" vertex="1" parent="1">
+          <mxGeometry x="360" y="320" width="250" height="82" as="geometry"/>
+        </mxCell>
+        <mxCell id="service" value="Domain Service&#xa;console mission rules" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#16A34A;fontColor=#0F172A;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="710" y="155" width="230" height="95" as="geometry"/>
+        </mxCell>
+        <mxCell id="mongo" value="MongoDB&#xa;lottos by purchaseId" style="shape=cylinder3d;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#DCFCE7;strokeColor=#15803D;fontColor=#0F172A;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="750" y="330" width="170" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="handler" value="Exception Handler&#xa;@RestControllerAdvice" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F1F5F9;strokeColor=#475569;fontColor=#0F172A;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="455" width="250" height="82" as="geometry"/>
+        </mxCell>
+        <mxCell id="json" value="JSON Response&#xa;success or status/error/code/message" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#1D4ED8;fontColor=#0F172A;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="455" width="230" height="82" as="geometry"/>
+        </mxCell>
+        <mxCell id="ci" value="GitHub Actions / Docker / EC2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#334155;fontColor=#334155;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="710" y="545" width="260" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="e1" value="HTTP request" style="endArrow=block;html=1;rounded=0;strokeColor=#1D4ED8;fontColor=#0F172A;" edge="1" parent="1" source="client" target="controller">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e2" value="request body" style="endArrow=block;html=1;rounded=0;strokeColor=#64748B;fontColor=#0F172A;" edge="1" parent="1" source="controller" target="validation">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e3" value="valid command" style="endArrow=block;html=1;rounded=0;strokeColor=#16A34A;fontColor=#0F172A;" edge="1" parent="1" source="controller" target="service">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e4" value="save/query" style="endArrow=block;html=1;rounded=0;strokeColor=#16A34A;fontColor=#0F172A;" edge="1" parent="1" source="service" target="mongo">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e5" value="error" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;fontColor=#0F172A;" edge="1" parent="1" source="validation" target="handler">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e6" value="standard response" style="endArrow=block;html=1;rounded=0;strokeColor=#1D4ED8;fontColor=#0F172A;" edge="1" parent="1" source="handler" target="json">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e7" value="success response" style="endArrow=block;html=1;rounded=0;strokeColor=#1D4ED8;fontColor=#0F172A;" edge="1" parent="1" source="service" target="json">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="825" y="90"/>
+              <mxPoint x="185" y="90"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
