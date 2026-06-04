@@ -27,7 +27,7 @@
 요청 명령을 그대로 실행한 결과입니다.
 
 ```text
-BUILD SUCCESSFUL in 6s
+BUILD SUCCESSFUL in 7s
 ```
 
 | 항목 | 결과 |
@@ -36,8 +36,8 @@ BUILD SUCCESSFUL in 6s
 | 실패 | 0 |
 | errors | 0 |
 | skipped | 0 |
-| 테스트 suite 누적 시간 | 1.437s |
-| Gradle 명령 전체 시간 | 6s |
+| 테스트 suite 누적 시간 | 1.766s |
+| Gradle 명령 전체 시간 | 7s |
 | 테스트 리포트 | `build/reports/tests/test/index.html` |
 
 CI workflow에 설정된 dummy env를 재현한 결과입니다.
@@ -83,7 +83,13 @@ coverage를 올리기 위한 빈 테스트는 추가하지 않았습니다. 기�
 `./gradlew jacocoTestReport`를 별도로 실행한 결과입니다.
 
 ```text
-BUILD SUCCESSFUL in 494ms
+BUILD SUCCESSFUL in 560ms
+```
+
+`./gradlew jacocoTestCoverageVerification` 실행 결과입니다. 현재 threshold rule은 별도로 설정하지 않았습니다.
+
+```text
+BUILD SUCCESSFUL in 641ms
 ```
 
 | 항목 | 값 |
