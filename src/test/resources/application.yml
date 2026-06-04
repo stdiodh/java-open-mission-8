@@ -1,7 +1,9 @@
 spring:
-  config:
-    import:
-
   data:
     mongodb:
       uri: mongodb://dummy:dummy@localhost:27017/dummy-db
+      auto-index-creation: false
+
+app:
+  server:
+    url: http://localhost:8080

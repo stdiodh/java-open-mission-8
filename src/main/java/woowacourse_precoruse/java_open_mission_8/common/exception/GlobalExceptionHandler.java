@@ -9,6 +9,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.support.WebExchangeBindException;
 
 import java.util.List;
 import woowacourse_precoruse.java_open_mission_8.common.dto.ErrorResponse;
@@ -20,8 +21,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        return createValidationErrorResponse(ex.getBindingResult());
+    }
 
-        BindingResult bindingResult = ex.getBindingResult();
+    @ExceptionHandler(WebExchangeBindException.class)
+    public ResponseEntity<ErrorResponse> handleWebExchangeBindException(WebExchangeBindException ex) {
+        return createValidationErrorResponse(ex.getBindingResult());
+    }
+
+    private ResponseEntity<ErrorResponse> createValidationErrorResponse(BindingResult bindingResult) {
         List<ObjectError> allErrors = bindingResult.getAllErrors();
         ObjectError firstError = allErrors.getFirst();
         String errorMessage = firstError.getDefaultMessage();
@@ -32,6 +40,7 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, status);
     }
+
     @ExceptionHandler(BusinessLogicException.class)
     public ResponseEntity<ErrorResponse> handleBusinessLogicException(BusinessLogicException ex) {
 

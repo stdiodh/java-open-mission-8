@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceCreator;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import woowacourse_precoruse.java_open_mission_8.common.exception.BusinessLogicException;
 import woowacourse_precoruse.java_open_mission_8.common.exception.ErrorCode;
@@ -14,6 +15,8 @@ public class Lotto {
 
     @Id
     private String id;
+
+    @Indexed(name = "purchaseId_1")
     private final String purchaseId;
     private final List<LottoNumber> numbers;
 
