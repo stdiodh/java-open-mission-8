@@ -1,14 +1,14 @@
 # Test
 
-본 프로젝트의 테스트와 coverage 결과는 `2026-06-04` 로컬에서 실제 실행한 Gradle 명령 기준으로 기록합니다. README는 수정하지 않았고, commit/push도 수행하지 않았습니다.
+본 프로젝트의 테스트와 coverage 결과는 `2026-06-04` 로컬에서 실제 실행한 Gradle 명령 기준으로 기록합니다. README는 수정하지 않았습니다.
 
 ## 작업 지시서 확인
 
 | 항목 | 결과 |
 | :--- | :--- |
-| 세부 작업 파일 | `10_COVERAGE-QUERY-TUNING_TASKS.md` |
-| 확인 결과 | repository와 `/Users/dh/Downloads`에서 파일을 찾지 못함 |
-| 처리 | goal prompt의 명시 조건을 기준으로 진행 |
+| 세부 작업 파일 | `/Users/dh/Downloads/codex_portfolio_prompts 3/06_java-open-mission-8_DOCS_TASKS.md` |
+| 확인 결과 | docs 생성/수정 대상과 테스트/coverage 확인 조건을 대조함 |
+| 처리 | README는 읽기와 diff 확인만 수행하고, 문서 정리는 docs 안에서만 진행 |
 
 ## 실행 환경
 
@@ -27,16 +27,17 @@
 요청 명령을 그대로 실행한 결과입니다.
 
 ```text
-BUILD SUCCESSFUL in 5s
+BUILD SUCCESSFUL in 6s
 ```
 
 | 항목 | 결과 |
 | :--- | :--- |
 | 전체 테스트 수 | 102 |
 | 실패 | 0 |
+| errors | 0 |
 | skipped | 0 |
-| 테스트 suite 누적 시간 | 1.275s |
-| Gradle 명령 전체 시간 | 5s |
+| 테스트 suite 누적 시간 | 1.437s |
+| Gradle 명령 전체 시간 | 6s |
 | 테스트 리포트 | `build/reports/tests/test/index.html` |
 
 CI workflow에 설정된 dummy env를 재현한 결과입니다.
@@ -48,7 +49,8 @@ BUILD SUCCESSFUL in 5s
 | 항목 | 결과 |
 | :--- | :--- |
 | 실행 명령 | `MONGO_URI=mongodb://dummy:dummy@localhost:27017/dummy-db SERVER_URL=https://dummy-server.com ./gradlew clean test` |
-| 결과 | 성공 |
+| 결과 | `BUILD SUCCESSFUL in 5s` |
+| 테스트 suite 누적 시간 | 1.464s |
 | 이유 | `src/test/resources/application.yml`에서 test scope의 `auto-index-creation`을 `false`로 설정해 context load가 MongoDB 인증에 의존하지 않음 |
 
 ## 추가한 테스트
@@ -77,6 +79,12 @@ coverage를 올리기 위한 빈 테스트는 추가하지 않았습니다. 기�
 ## Coverage 설정
 
 이번 단계에서 `jacoco` plugin을 추가하고 `jacocoTestReport`의 XML, HTML, CSV 리포트 생성을 설정했습니다. coverage threshold나 verification gate는 추가하지 않았습니다.
+
+`./gradlew jacocoTestReport`를 별도로 실행한 결과입니다.
+
+```text
+BUILD SUCCESSFUL in 494ms
+```
 
 | 항목 | 값 |
 | :--- | :--- |
