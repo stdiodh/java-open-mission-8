@@ -336,14 +336,24 @@ CI/CD 파이프라인을 통해 각각 AWS와 Firebase에 배포됩니다.
 
 ### 📊 테스트 실행 결과 (Test Execution Result)
 
-![Test Result](https://img.shields.io/badge/Tests-95_Passed-success?style=for-the-badge&logo=junit5&logoColor=white)
+![Test Result](https://img.shields.io/badge/Tests-102_Passed-success?style=for-the-badge&logo=junit5&logoColor=white)
 
-> 총 **95개의 테스트**가 **약 1초(1s 122ms)** 내에 통과했습니다. <br>
+> 총 **102개의 테스트**가 로컬 Gradle 기준 통과했습니다. <br>
 > 빠른 실행 속도를 통해 개발 과정에서 즉각적인 피드백을 확인하고 있습니다.
 
 <br>
 
 <img width="500" alt="테스트 실행 결과 스크린샷" src="https://github.com/user-attachments/assets/57bf4f43-adf5-4c5c-835f-da1f352e0104" />
+
+### 🔁 CI/CD 실행 근거 (GitHub Actions)
+
+| 항목 | 측정 결과 | 조건 | 근거 | 날짜/commit | 이력서 사용 |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `Test CICD` workflow | 평균 `85.4s`, 중앙값 `85.5s` | 최근 성공 10회 | `gh run list`, `gh run view` | 2025-11-21~2026-06-04, latest `5e84f0d` | 가능 |
+| `Deploy CICD` job | 평균 `117.2s`, 중앙값 `117.5s` | 확인 가능한 성공 4회 | `gh run list`, `gh run view` | 2025-11-16~2026-06-04, latest `5e84f0d` | `n=4` 명시 시 가능 |
+
+> 로컬 테스트 시간과 GitHub Actions 실행 시간은 측정 범위가 달라 before/after 개선률로 비교하지 않습니다. <br>
+> 상세 근거와 `[확인 필요]` 항목은 [CI/CD Metrics](./docs/ci-cd-metrics.md)에 정리했습니다.
 
 -----
 
